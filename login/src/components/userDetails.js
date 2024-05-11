@@ -9,7 +9,7 @@ export default class UserDetails extends Component {
   }
   
   componentDidMount() {
-    fetch("http://localhost:5000/userData", {
+    fetch("https://route66alpha-ym2h.vercel.app/userData", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
