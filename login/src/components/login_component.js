@@ -14,7 +14,7 @@ export default class Login extends Component {
     e.preventDefault();
     const { email, password } = this.state;
     console.log(email, password);
-    fetch("route66alpha.vercel.app/login-user", {
+    fetch("https://route66alpha.vercel.app/login-user", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
