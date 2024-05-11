@@ -1,12 +1,12 @@
 {
-  "version":2,
-  "builds": [
-    { "src: "*.js", "use": @vercel/node }
-  ],
+  "version": 2,
   "routes": [
     {
-      "src": "/(.*),
-        "dest": "/"
+      "src": "/login-user",
+      "methods": ["POST"],
+      "headers": {
+        "Access-Control-Allow-Origin": "https://route66alpha-ym2h.vercel.app"
+      }
     }
   ]
 }
