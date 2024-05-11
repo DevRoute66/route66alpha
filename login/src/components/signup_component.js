@@ -16,7 +16,7 @@ export default function SignUp() {
       e.preventDefault();
 
       console.log(fname, lname, email, password);
-      fetch("http://localhost:5000/register", {
+      fetch("https://route66alpha.vercel.app/register", {
         method: "POST",
         crossDomain: true,
         headers: {
