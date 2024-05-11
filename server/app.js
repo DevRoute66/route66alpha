@@ -4,7 +4,14 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs"); // Importando o bcryptjs
 app.use(express.json());
 const cors = require("cors");
-app.use(cors());
+app.use(cors(
+  {
+    origin: ["https://deploy-mern-lwhq.vercel.app],
+    methods: ["POST", "GET"],
+    credentials: true
+  }
+             
+));
 
 const jwt=require("jsonwebtoken");
 
