@@ -6,7 +6,7 @@ app.use(express.json());
 const cors = require("cors");
 app.use(cors(
   {
-    origin: [""],
+    origin: ["https://route66alpha-ym2h.vercel.app/"],
     methods: ["POST", "GET"],
     credentials: true
   }
