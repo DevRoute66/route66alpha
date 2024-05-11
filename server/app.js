@@ -4,18 +4,14 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs"); // Importando o bcryptjs
 app.use(express.json());
 const cors = require("cors");
-app.use(cors(
-  {
-    origin: ["https://route66alpha-ym2h.vercel.app/"],
-    methods: ["POST", "GET"],
-    credentials: true
-  }
-             
-));
+app.use(cors({
+  origin: ["https://route66alpha-ym2h.vercel.app"],
+  methods: ["POST", "GET"],
+  credentials: true
+}));
 
-const jwt=require("jsonwebtoken");
-
-const JWT_SECRET= "kdskhwrbfbw$%86nfdbgdhbbfb9375nbdhwbvb%$¨$hfelsnj@hskjfnf-mgfnehgvrhtgrhg>ncvg"
+const jwt = require("jsonwebtoken");
+const JWT_SECRET = "kdskhwrbfbw$%86nfdbgdhbbfb9375nbdhwbvb%$¨$hfelsnj@hskjfnf-mgfnehgvrhtgrhg>ncvg";
 
 const mongoUrl = "mongodb+srv://route66company:fv2507@cluster0.lqb3tgg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
@@ -65,14 +61,9 @@ app.post("/login-user", async (req, res) => {
   }
   if (await bcrypt.compare(password, user.password)) {
     const token = jwt.sign({ email: user.email }, JWT_SECRET);
-
-    if (res.status(201)) {
-      return res.json({ status: "ok", data: token});
-    } else {
-      return res.json({ error: "error" });
-    }
+    return res.json({ status: "ok", data: token });
   }
-  res.jason({ status: "error", error: "Invalid Password"});
+  res.json({ status: "error", error: "Invalid Password" });
 });
 
 app.post("/userData", async (req, res) => {
@@ -95,6 +86,4 @@ app.post("/userData", async (req, res) => {
   }
 });
 
-app.listen(5000, () => {
-  console.log("Server Started");
-});
+module.exports = app; // Exporte o aplicativo para uso na Vercel
