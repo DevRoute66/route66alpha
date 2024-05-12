@@ -2,7 +2,7 @@
   "version": 2,
   "routes": [
     {
-      "src": "/register",
+      "source": "/register",
       "methods": ["POST"],
       "headers": [
         { "key": "Access-Control-Allow-Credentials", "value": "true" },
