@@ -1,14 +1,26 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs"); // Importando o bcryptjs
+const bcrypt = require("bcryptjs");
 app.use(express.json());
 const cors = require("cors");
-app.use(cors({
-  origin: ["https://route66alpha-ym2h.vercel.app"],
-  methods: ["POST", "GET"],
-  credentials: true
-}));
+
+const allowCors = fn => async (req, res) => {
+  res.setHeader('Access-Control-Allow-Credentials', true)
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT')
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+  )
+  if (req.method === 'OPTIONS') {
+    res.status(200).end()
+    return
+  }
+  return await fn(req, res)
+}
+
+app.use(allowCors);
 
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = "kdskhwrbfbw$%86nfdbgdhbbfb9375nbdhwbvb%$¨$hfelsnj@hskjfnf-mgfnehgvrhtgrhg>ncvg";
@@ -29,21 +41,18 @@ app.post("/register", async (req, res) => {
   const { fname, lname, email, password } = req.body;
   
   try {
-    // Verificar se o e-mail já está registrado
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).send({ error: "E-mail already registered" });
     }
     
-    // Criptografar a senha antes de salvar
     const hashedPassword = await bcrypt.hash(password, 10);
     
-    // Criar novo usuário
     await User.create({
       fname,
       lname,
       email,
-      password: hashedPassword, // Salvar senha criptografada
+      password: hashedPassword,
     });
     res.send({ status: "ok" });
   } catch (error) {
@@ -70,8 +79,6 @@ app.post("/userData", async (req, res) => {
   const { token } = req.body;
   try {
     const user = jwt.verify(token, JWT_SECRET);
-    console.log(user);
-
     const usermail = user.email;
     User.findOne({ email: usermail })
       .then((data) => {
@@ -81,9 +88,8 @@ app.post("/userData", async (req, res) => {
         res.send({ status: "error", data: error });
       });
   } catch (error) {
-    // Aqui você pode lidar com erros de verificação do token
     res.send({ status: "error", data: error.message });
   }
 });
 
-module.exports = app; // Exporte o aplicativo para uso na Vercel
+module.exports = app;
